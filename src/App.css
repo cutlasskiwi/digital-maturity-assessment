@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove default browser margin and padding */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom styles for the application */
+.dotted-line {
+  border-top: 2px dotted #ccc;
+}
+
+/* Smooth transitions for interactive elements */
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Ensure the layout takes up the full height */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
