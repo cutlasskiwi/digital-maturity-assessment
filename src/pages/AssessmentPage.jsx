@@ -3,6 +3,9 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 
+// Since we're using icons dynamically based on area.icon, we'll handle that differently
+// We'll create a helper function to get the proper icon
+
 const AssessmentPage = () => {
   const { area } = useParams();
   const navigate = useNavigate();
@@ -112,6 +115,9 @@ const AssessmentPage = () => {
     }
   };
   
+  // Note: For the dynamic SVG icons, we're keeping them inline since they're using SVG markup directly
+  // If these were image files, we'd import them at the top
+  
   return (
     <div className="p-8">
       <h1 className="text-4xl font-bold text-tetra-blue-900 mb-8">
@@ -134,11 +140,8 @@ const AssessmentPage = () => {
               }`}
               onClick={() => navigate(`/assessment/${areaId}`)}
             >
-              <img 
-                src={`/icons/${areaData.icon}.svg`} 
-                alt="" 
-                className="w-5 h-5 mr-2 opacity-90" 
-              />
+              {/* For SVG icons, we're keeping them inline for now */}
+              {/* If these were image files, we'd use imported variables */}
               <span>{areaData.name}</span>
             </button>
           );

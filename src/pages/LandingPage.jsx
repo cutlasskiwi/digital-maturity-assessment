@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
+// Import assets directly
+import tetraPakLogo from '/tetra-pak-logo.svg';
+import saveIcon from '/icons/save.png';
+import arrowRightIcon from '/icons/arrow-right.png';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -18,7 +22,7 @@ const LandingPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-tetra-blue-900 text-white p-8">
       <div className="mb-8">
         <img 
-          src="/tetra-pak-logo.svg" 
+          src={tetraPakLogo} 
           alt="Tetra Pak Logo"
           className="h-32 w-32"
         />
@@ -37,7 +41,7 @@ const LandingPage = () => {
         {hasSavedData && (
           <div className="flex flex-col items-center cursor-pointer" onClick={() => navigate('/results')}>
             <img 
-              src="/icons/save.png" 
+              src={saveIcon} 
               alt="Load Data"
               className="h-12 w-12 mb-3 hover:opacity-80 transition-opacity" 
             />
@@ -53,7 +57,7 @@ const LandingPage = () => {
           }}
         >
           <img 
-            src="/icons/arrow-right.png" 
+            src={arrowRightIcon} 
             alt="Continue"
             className="h-12 w-12 mb-3 hover:opacity-80 transition-opacity" 
           />

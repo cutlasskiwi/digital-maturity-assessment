@@ -2,6 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 
+// Import all static assets
+import factoryBackgroundImg from '/factory-background.png';
+import infoIcon from '/icons/b-info.png';
+import placeIcon from '/icons/b-place.png';
+import numberIcon from '/icons/b-number.png';
+import volumeIcon from '/icons/b-volume.png';
+import packageIcon from '/icons/b-package.png';
+import saveIcon from '/icons/save.png';
+import arrowRightIcon from '/icons/arrow-right.png';
+
+// Import product icons
+import cowIcon from '/icons/cow.png';
+import drinkIcon from '/icons/drink.png';
+import cheeseIcon from '/icons/cheese.png';
+import icecreamIcon from '/icons/icecream.png';
+import foodIcon from '/icons/food.png';
+import leafIcon from '/icons/leaf.png';
+import powderIcon from '/icons/powder.png';
+import otherIcon from '/icons/other.png';
+
 const GettingStartedPage = () => {
   const navigate = useNavigate();
   const { setSidebarTitle } = useAssessment();
@@ -25,14 +45,14 @@ const GettingStartedPage = () => {
   });
 
   const productOptions = [
-    { id: 'dairy', name: 'Dairy', icon: '/icons/cow.png' },
-    { id: 'jnsd', name: 'JNSD', icon: '/icons/drink.png' },
-    { id: 'cheese', name: 'Cheese', icon: '/icons/cheese.png' },
-    { id: 'ice-cream', name: 'Ice Cream', icon: '/icons/icecream.png' },
-    { id: 'food', name: 'Food', icon: '/icons/food.png' },
-    { id: 'plant-based', name: 'Plant-based', icon: '/icons/leaf.png' },
-    { id: 'powder', name: 'Powder', icon: '/icons/powder.png' },
-    { id: 'other', name: 'Other', icon: '/icons/other.png' }
+    { id: 'dairy', name: 'Dairy', icon: cowIcon },
+    { id: 'jnsd', name: 'JNSD', icon: drinkIcon },
+    { id: 'cheese', name: 'Cheese', icon: cheeseIcon },
+    { id: 'ice-cream', name: 'Ice Cream', icon: icecreamIcon },
+    { id: 'food', name: 'Food', icon: foodIcon },
+    { id: 'plant-based', name: 'Plant-based', icon: leafIcon },
+    { id: 'powder', name: 'Powder', icon: powderIcon },
+    { id: 'other', name: 'Other', icon: otherIcon }
   ];
 
   const handleInputChange = (e) => {
@@ -74,7 +94,7 @@ const GettingStartedPage = () => {
           {/* Factory illustration */}
           <div className="absolute top-0 right-0 bottom-0 w-1/3 pointer-events-none z-0">
             <img 
-              src="/factory-background.png" 
+              src={factoryBackgroundImg} 
               alt="Factory illustration" 
               className="h-full w-full object-contain object-right"
             />
@@ -84,7 +104,7 @@ const GettingStartedPage = () => {
           <div className="relative z-10 p-8 space-y-8">
             {/* Company name */}
             <div className="flex items-center">
-              <img src="/icons/b-info.png" alt="Info" className="w-12 h-12 mr-4" />
+              <img src={infoIcon} alt="Info" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Company name</div>
               <div className="w-3/5">
                 <input
@@ -100,7 +120,7 @@ const GettingStartedPage = () => {
 
             {/* Factory location */}
             <div className="flex items-center">
-              <img src="/icons/b-place.png" alt="Place" className="w-12 h-12 mr-4" />
+              <img src={placeIcon} alt="Place" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Factory location</div>
               <div className="w-3/5">
                 <input
@@ -116,7 +136,7 @@ const GettingStartedPage = () => {
 
             {/* Number of production lines */}
             <div className="flex items-center">
-              <img src="/icons/b-number.png" alt="Number" className="w-12 h-12 mr-4" />
+              <img src={numberIcon} alt="Number" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">
                 Number of production lines
               </div>
@@ -134,7 +154,7 @@ const GettingStartedPage = () => {
 
             {/* Production volume */}
             <div className="flex items-center">
-              <img src="/icons/b-volume.png" alt="Volume" className="w-12 h-12 mr-4" />
+              <img src={volumeIcon} alt="Volume" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Production volume</div>
               <div className="w-3/5">
                 <input
@@ -150,7 +170,7 @@ const GettingStartedPage = () => {
 
             {/* Type of products - Updated layout to match design */}
             <div className="flex items-start">
-              <img src="/icons/b-package.png" alt="Package" className="w-12 h-12 mr-4" />
+              <img src={packageIcon} alt="Package" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Type of products</div>
               <div className="w-3/5">
                 <div className="flex flex-wrap gap-6">
@@ -180,7 +200,7 @@ const GettingStartedPage = () => {
 
             {/* Location (non-editable) */}
             <div className="flex items-center">
-              <img src="/icons/b-place.png" alt="Location" className="w-12 h-12 mr-4" />
+              <img src={placeIcon} alt="Location" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Location:</div>
               <div className="w-3/5">
                 <div className="w-full p-3 bg-gray-300 bg-opacity-70 text-[#023F88] rounded-md cursor-not-allowed">
@@ -195,14 +215,14 @@ const GettingStartedPage = () => {
         <div className="flex justify-center space-x-32">
           <div className="flex flex-col items-center cursor-pointer" onClick={handleSave}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
-              <img src="/icons/save.png" alt="Save" className="h-8 w-8" />
+              <img src={saveIcon} alt="Save" className="h-8 w-8" />
             </div>
             <span className="text-[#023F88] font-bold">Save data</span>
           </div>
           
           <div className="flex flex-col items-center cursor-pointer" onClick={handleContinue}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
-              <img src="/icons/arrow-right.png" alt="Continue" className="h-8 w-8" />
+              <img src={arrowRightIcon} alt="Continue" className="h-8 w-8" />
             </div>
             <span className="text-[#023F88] font-bold">Continue</span>
           </div>

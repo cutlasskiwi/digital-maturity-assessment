@@ -2,6 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 
+// Import icons for area types
+import smartOrganisationIcon from '/icons/smart-organisation.png';
+import smartWorkforceIcon from '/icons/smart-workforce.png';
+import smartOperationsIcon from '/icons/smart-operations.png';
+import smartFactoryIcon from '/icons/smart-factory.png';
+import smartSupplyChainIcon from '/icons/smart-supply-chain.png';
+
+// Import active icons (b- prefix versions)
+import bSmartOrganisationIcon from '/icons/b-smart-organisation.png';
+import bSmartWorkforceIcon from '/icons/b-smart-workforce.png';
+import bSmartOperationsIcon from '/icons/b-smart-operations.png';
+import bSmartFactoryIcon from '/icons/b-smart-factory.png';
+import bSmartSupplyChainIcon from '/icons/b-smart-supply-chain.png';
+
+// Import navigation icons
+import arrowLeftIcon from '/icons/arrow-left.png';
+import arrowRightIcon from '/icons/arrow-right.png';
+
 const SelectAreasPage = () => {
   const navigate = useNavigate();
   const { 
@@ -107,25 +125,21 @@ const SelectAreasPage = () => {
     });
   };
   
-  // Map context icon names to actual file names
-  const iconMappings = {
-    'organization': 'smart-organisation',
-    'workforce': 'smart-workforce',
-    'operations': 'smart-operations',
-    'factory': 'smart-factory',
-    'supply-chain': 'smart-supply-chain'
+  // Map for area icons
+  const areaIconMap = {
+    'organization': { regular: smartOrganisationIcon, active: bSmartOrganisationIcon },
+    'workforce': { regular: smartWorkforceIcon, active: bSmartWorkforceIcon },
+    'operations': { regular: smartOperationsIcon, active: bSmartOperationsIcon },
+    'factory': { regular: smartFactoryIcon, active: bSmartFactoryIcon },
+    'supply-chain': { regular: smartSupplyChainIcon, active: bSmartSupplyChainIcon }
   };
   
   // Function to get proper icon path
-  const getIconPath = (area, isActive) => {
-    // Get the correct filename from mappings
-    const iconName = iconMappings[area.icon] || area.icon;
+  const getIconForArea = (area, isActive) => {
+    const iconSet = areaIconMap[area.id] || areaIconMap[area.icon];
+    if (!iconSet) return null;
     
-    // Icons are in /public/icons folder
-    if (isActive) {
-      return `/icons/b-${iconName}.png`;
-    }
-    return `/icons/${iconName}.png`;
+    return isActive ? iconSet.active : iconSet.regular;
   };
   
   // Get assessment criteria for the active area
@@ -148,26 +162,29 @@ const SelectAreasPage = () => {
           {availableAreas.map(area => {
             const isSelected = selectedAreas.includes(area.id);
             const isActive = activeAreaId === area.id;
+            const areaIcon = getIconForArea(area, isActive);
             
             return (
               <div key={area.id} className="flex flex-col items-center">
                 <div className="h-24 flex items-center justify-center mb-4">
-                  <img 
-                    src={getIconPath(area, isActive)}
-                    alt={area.name}
-                    className="h-16 w-16"
-                    onError={(e) => {
-                      console.error(`Failed to load image: ${e.target.src}`);
-                      e.target.style.display = 'none';
-                      const parent = e.target.parentNode;
-                      if (parent) {
-                        const textNode = document.createElement('div');
-                        textNode.textContent = area.name;
-                        textNode.className = 'text-[#023F88] font-medium';
-                        parent.appendChild(textNode);
-                      }
-                    }}
-                  />
+                  {areaIcon && (
+                    <img 
+                      src={areaIcon}
+                      alt={area.name}
+                      className="h-16 w-16"
+                      onError={(e) => {
+                        console.error(`Failed to load image: ${e.target.src}`);
+                        e.target.style.display = 'none';
+                        const parent = e.target.parentNode;
+                        if (parent) {
+                          const textNode = document.createElement('div');
+                          textNode.textContent = area.name;
+                          textNode.className = 'text-[#023F88] font-medium';
+                          parent.appendChild(textNode);
+                        }
+                      }}
+                    />
+                  )}
                 </div>
                 
                 <button
@@ -199,14 +216,16 @@ const SelectAreasPage = () => {
             {/* Show active area */}
             <div className="mb-6">
               <div className="inline-flex items-center bg-[#023F88] text-white px-4 py-2 rounded-md">
-                <img 
-                  src={getIconPath(getAreaById(activeAreaId), true)}
-                  alt={getAreaById(activeAreaId).name}
-                  className="h-6 w-6 mr-2"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
+                {getIconForArea(getAreaById(activeAreaId), true) && (
+                  <img 
+                    src={getIconForArea(getAreaById(activeAreaId), true)}
+                    alt={getAreaById(activeAreaId).name}
+                    className="h-6 w-6 mr-2"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                    }}
+                  />
+                )}
                 <span>{getAreaById(activeAreaId).name}</span>
               </div>
             </div>
@@ -296,7 +315,7 @@ const SelectAreasPage = () => {
           <div className="flex flex-col items-center cursor-pointer" onClick={handleGoBack}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
               <img 
-                src="/icons/arrow-left.png" 
+                src={arrowLeftIcon} 
                 alt="Go back"
                 className="h-8 w-8" 
                 onError={(e) => {
@@ -315,7 +334,7 @@ const SelectAreasPage = () => {
                 : 'bg-gray-300 cursor-not-allowed'
             }`}>
               <img 
-                src="/icons/arrow-right.png" 
+                src={arrowRightIcon} 
                 alt="Continue"
                 className="h-8 w-8" 
                 onError={(e) => {

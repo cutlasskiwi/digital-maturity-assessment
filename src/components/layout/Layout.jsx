@@ -2,6 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+// Import the logo directly
+import tetraPakLogo from '/tetra-pak-logo.svg';
 
 const Layout = ({ children, sidebarTitle }) => {
   return (
@@ -11,7 +13,7 @@ const Layout = ({ children, sidebarTitle }) => {
         {/* Logo container with Link to landing page */}
         <Link to="/" className="flex justify-center items-center hover:opacity-80 transition-opacity">
           <img 
-            src="/tetra-pak-logo.svg" 
+            src={tetraPakLogo} 
             alt="Tetra Pak Logo"
             className="h-16 w-16 my-4" 
           />

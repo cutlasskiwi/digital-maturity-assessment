@@ -12,7 +12,7 @@ import './App.css';
 function App() {
   return (
     <AssessmentProvider>
-      <Router>
+      <Router basename="/digital-maturity-assessment">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/getting-started" element={

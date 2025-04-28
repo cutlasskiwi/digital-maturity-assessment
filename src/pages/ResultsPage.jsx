@@ -3,6 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 import { useEffect, useRef } from 'react';
 
+// Import static assets
+import diagramBarsIcon from '/icons/diagram-bars-icon.png';
+import arrowLeftIcon from '/icons/arrow-left.png';
+import arrowRightIcon from '/icons/arrow-right.png';
+
 const ResultsPage = () => {
   const navigate = useNavigate();
   const { 
@@ -203,8 +208,8 @@ const ResultsPage = () => {
               right: "0px",
               height: `${areasList.length * 60}px`, /* Adjust height to match area rows */
             }}>
-              {/* Create one line for each score position */}
-              {[1, 2, 3, 4, 5].map((score, index) => (
+{/* Create one line for each score position */}
+{[1, 2, 3, 4, 5].map((score, index) => (
                 <div 
                   key={`gridline-${score}`} 
                   className="absolute top-0 bottom-0 w-px bg-white" 
@@ -279,7 +284,7 @@ const ResultsPage = () => {
             {/* Legend */}
             <div className="flex flex-col mt-8 mb-4">
               <div className="flex items-center mb-1">
-                <img src="/icons/diagram-bars-icon.png" alt="Industry standard" className="w-6 h-6 mr-2" />
+                <img src={diagramBarsIcon} alt="Industry standard" className="w-6 h-6 mr-2" />
                 <span className="text-[#023F88]">Industry standard</span>
               </div>
               <div className="flex items-center mb-1">
@@ -299,7 +304,7 @@ const ResultsPage = () => {
           <div className="flex flex-col items-center cursor-pointer" onClick={handleGoBack}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
               <img 
-                src="/icons/arrow-left.png" 
+                src={arrowLeftIcon}
                 alt="Go back"
                 className="h-8 w-8" 
                 onError={(e) => {
@@ -314,7 +319,7 @@ const ResultsPage = () => {
           <div className="flex flex-col items-center cursor-pointer" onClick={handleExit}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
               <img 
-                src="/icons/arrow-right.png" 
+                src={arrowRightIcon}
                 alt="Exit"
                 className="h-8 w-8" 
                 onError={(e) => {
