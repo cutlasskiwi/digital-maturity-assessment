@@ -35,7 +35,7 @@ const availableAreas = [
   { 
     id: 'operations', 
     name: 'Smart operations', 
-    description: 'Technology-enabled continuous improvement in areas like production, maintenance, quality and sustainability.',
+    description: 'Technology-enabled continuous improvement in areas like production, maintenance, quality and sustainability',
     icon: 'operations',
     questions: [
       { id: 'quality', name: 'Level 1 - Quality control', maxLevel: 5 },

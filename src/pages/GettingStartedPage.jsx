@@ -9,7 +9,6 @@ import placeIcon from '/icons/b-place.png';
 import numberIcon from '/icons/b-number.png';
 import volumeIcon from '/icons/b-volume.png';
 import packageIcon from '/icons/b-package.png';
-import saveIcon from '/icons/save.png';
 import arrowRightIcon from '/icons/arrow-right.png';
 
 // Import product icons
@@ -39,7 +38,7 @@ const GettingStartedPage = () => {
       factoryLocation: '',
       productionLines: '',
       productionVolume: '',
-      location: 'Lund Automation Room',
+      location: 'Lund Automation Room', // Default value
       productTypes: []
     };
   });
@@ -70,12 +69,8 @@ const GettingStartedPage = () => {
     });
   };
 
-  const handleSave = () => {
-    localStorage.setItem('tetraPackCompanyInfo', JSON.stringify(formData));
-    alert('Data saved successfully!');
-  };
-
   const handleContinue = () => {
+    // Save data to localStorage before continuing
     localStorage.setItem('tetraPackCompanyInfo', JSON.stringify(formData));
     navigate('/select-areas');
   };
@@ -198,28 +193,26 @@ const GettingStartedPage = () => {
               </div>
             </div>
 
-            {/* Location (non-editable) */}
+            {/* Location - Moved below Type of products and made editable */}
             <div className="flex items-center">
               <img src={placeIcon} alt="Location" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Location:</div>
               <div className="w-3/5">
-                <div className="w-full p-3 bg-gray-300 bg-opacity-70 text-[#023F88] rounded-md cursor-not-allowed">
-                  Lund Automation Room
-                </div>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  onChange={handleInputChange}
+                  placeholder="Lund Automation Room"
+                  className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
+                />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation buttons */}
-        <div className="flex justify-center space-x-32">
-          <div className="flex flex-col items-center cursor-pointer" onClick={handleSave}>
-            <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
-              <img src={saveIcon} alt="Save" className="h-8 w-8" />
-            </div>
-            <span className="text-[#023F88] font-bold">Save data</span>
-          </div>
-          
+        {/* Navigation button - Save button removed */}
+        <div className="flex justify-center">
           <div className="flex flex-col items-center cursor-pointer" onClick={handleContinue}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
               <img src={arrowRightIcon} alt="Continue" className="h-8 w-8" />
