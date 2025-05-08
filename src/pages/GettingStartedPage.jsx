@@ -10,6 +10,7 @@ import numberIcon from '/icons/b-number.png';
 import volumeIcon from '/icons/b-volume.png';
 import packageIcon from '/icons/b-package.png';
 import arrowRightIcon from '/icons/arrow-right.png';
+import saveIcon from '/icons/save.png'; // Import the save icon
 
 // Import product icons
 import cowIcon from '/icons/cow.png';
@@ -67,6 +68,13 @@ const GettingStartedPage = () => {
       
       return { ...prev, productTypes: updatedTypes };
     });
+  };
+
+  // Function to save data to localStorage
+  const handleSaveData = () => {
+    localStorage.setItem('tetraPackCompanyInfo', JSON.stringify(formData));
+    // You could add a success notification here if needed
+    alert('Data saved successfully!');
   };
 
   const handleContinue = () => {
@@ -211,8 +219,17 @@ const GettingStartedPage = () => {
           </div>
         </div>
 
-        {/* Navigation button - Save button removed */}
-        <div className="flex justify-center">
+        {/* Navigation buttons - Added Save Data button */}
+        <div className="flex justify-center gap-16">
+          {/* Save Data button */}
+          <div className="flex flex-col items-center cursor-pointer" onClick={handleSaveData}>
+            <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
+              <img src={saveIcon} alt="Save data" className="h-8 w-8" />
+            </div>
+            <span className="text-[#023F88] font-bold">Save data</span>
+          </div>
+          
+          {/* Continue button */}
           <div className="flex flex-col items-center cursor-pointer" onClick={handleContinue}>
             <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
               <img src={arrowRightIcon} alt="Continue" className="h-8 w-8" />
