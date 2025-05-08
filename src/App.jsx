@@ -31,7 +31,7 @@ function App() {
             </Layout>
           } />
           <Route path="/results" element={
-            <Layout sidebarTitle="Maturity benchmark areas">
+            <Layout sidebarTitle="Maturity benchmark results">
               <ResultsPage />
             </Layout>
           } />

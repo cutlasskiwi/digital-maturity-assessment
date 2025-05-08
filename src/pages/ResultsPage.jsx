@@ -25,7 +25,7 @@ const ResultsPage = () => {
   // Filter only the selected areas
   const areasList = availableAreas.filter(area => selectedAreas.includes(area.id));
   
-  // Define correct industry standard values for each area (from 0 to 5)
+  // Define correct industry standard values for each area (from 1 to 5)
   const industryStandards = {
     'organization': 2,
     'workforce': 1,
@@ -128,19 +128,17 @@ const ResultsPage = () => {
   // Check if no areas are selected
   if (selectedAreas.length === 0) {
     return (
-      <div className="bg-[#B9E5FB] min-h-screen p-8">
-        <div className="p-8 text-center">
-          <h1 className="text-4xl font-bold text-[#023F88] mb-8">
-            No areas selected
-          </h1>
-          <p className="mb-8">Please go back and select at least one area to assess.</p>
-          <button
-            onClick={() => navigate('/select-areas')}
-            className="bg-[#023F88] text-white px-6 py-3 rounded-full"
-          >
-            Go to area selection
-          </button>
-        </div>
+      <div className="p-8 text-center">
+        <h1 className="text-4xl font-bold text-[#023F88] mb-8">
+          No areas selected
+        </h1>
+        <p className="mb-8">Please go back and select at least one area to assess.</p>
+        <button
+          onClick={() => navigate('/select-areas')}
+          className="bg-[#023F88] text-white px-6 py-3 rounded-full"
+        >
+          Go to area selection
+        </button>
       </div>
     );
   }
@@ -176,161 +174,164 @@ const ResultsPage = () => {
   };
 
   return (
-    <div className="bg-[#B9E5FB] min-h-screen flex justify-center">
-      {/* Added max-width and centered content */}
-      <div className="p-8 max-w-5xl w-full">
-        <h1 className="text-4xl font-bold text-[#023F88] mb-8 text-center">
-          Your results
-        </h1>
-        
-        <div className="mb-12">
-          <div ref={resultsContainerRef} className="relative">
-            {/* Score header */}
-            <div className="flex relative mb-4">
-              <div className="w-64 font-semibold text-[#023F88] text-xl px-4 py-2">
-                <span>Score</span>
-              </div>
-              <div className="flex-1">
-                <div className="grid grid-cols-5 gap-0">
-                  {[1, 2, 3, 4, 5].map(score => (
-                    <div key={score} className="text-center font-semibold text-[#023F88] text-xl py-2">
-                      {score}
-                    </div>
-                  ))}
-                </div>
+    <div className="p-8 max-w-5xl w-full mx-auto">
+      <h1 className="text-4xl font-bold text-[#023F88] mb-8 text-center">
+        Your results
+      </h1>
+      
+      <div className="mb-12">
+        <div ref={resultsContainerRef} className="relative">
+          {/* Score header */}
+          <div className="flex relative mb-4">
+            <div className="w-56 font-semibold text-[#023F88] text-xl px-4 py-2">
+              <span>Score</span>
+            </div>
+            <div className="flex-1">
+              <div className="relative">
+                {/* Score numbers positioned directly above grid lines */}
+                {[1, 2, 3, 4, 5].map(score => (
+                  <div 
+                    key={score} 
+                    className="absolute font-semibold text-[#023F88] text-xl py-2"
+                    style={{
+                      left: `${(score) * 20}%`,
+                      transform: 'translateX(-50%)'
+                    }}
+                  >
+                    {score}
+                  </div>
+                ))}
               </div>
             </div>
-            
-            {/* Vertical grid lines with fixed positions */}
-            <div className="absolute z-[3] pointer-events-none" style={{
-              top: "48px", /* Height of the score header */
-              bottom: "0px",
-              left: "264px", /* Width of left column + padding */
-              right: "0px",
-              height: `${areasList.length * 72}px`, /* Adjusted height to match increased row spacing */
-            }}>
-              {/* Create one line for each score position */}
-              {[1, 2, 3, 4, 5].map((score, index) => (
-                <div 
-                  key={`gridline-${score}`} 
-                  className="absolute top-0 bottom-0 w-px bg-white" 
-                  style={{ 
-                    left: `${(score * 20) - 10}%`,
-                    height: "100%"
-                  }}
-                ></div>
-              ))}
-            </div>
-            
-            {/* Maturity areas */}
-            <div>
-              {areasList.map((area, index) => {
-                const areaResult = results[area.id] || { current: 0, desired: 0 };
-                const industryStandard = industryStandards[area.id];
-                
-                // Calculate the width of the industry standard bar
-                // The grid is divided into 5 columns, so each column is 20% wide
-                // We multiply the standard value by 20% to get the width
-                const standardWidth = industryStandard * 20;
-                
-                return (
-                  <div key={area.id} className="flex relative mb-6"> {/* Increased margin-bottom from mb-4 to mb-6 */}
-                    {/* Area name in left column with icon */}
-                    <div className="w-64 pr-2">
-                      <div className="bg-[#023F88] text-white py-1 px-4 h-12 rounded flex items-center"> {/* Reduced height from h-14 to h-12 and reduced padding */}
-                        {areaIcons[area.id] && (
-                          <span className="mr-2">{areaIcons[area.id]}</span>
-                        )}
-                        <span className="text-lg whitespace-nowrap">{area.name}</span>
-                      </div>
-                    </div>
-                    
-                    {/* Score grid in remaining columns */}
-                    <div className="flex-1 h-12 relative"> {/* Reduced height from h-14 to h-12 */}
-                      {/* Industry standard background - custom width based on standard value */}
-                      <div 
-                        className="absolute inset-y-0 left-0 bg-[#daf1fd] z-[2]" 
-                        style={{ 
-                          width: `${standardWidth}%` 
-                        }}
-                      ></div>
-                      
-                      {/* Current state dot (blue) */}
-                      {areaResult.current > 0 && (
-                        <div 
-                          className="current-dot absolute top-1/2 w-6 h-6 rounded-full bg-[#023F88] z-[10]"
-                          style={{ 
-                            left: `${(areaResult.current * 20) - 10}%`, // Centered on grid line
-                            transform: 'translate(-50%, -50%)'
-                          }}
-                        ></div>
+          </div>
+          
+          {/* Vertical grid lines with fixed positions */}
+          <div className="absolute z-[3] pointer-events-none" style={{
+            top: "48px", /* Height of the score header */
+            bottom: "0px",
+            left: "224px", /* Width of left column + padding - adjusted value */
+            right: "0px",
+            height: `${areasList.length * 72}px`, /* Adjusted height to match increased row spacing */
+          }}>
+            {/* Create vertical grid lines at score positions */}
+            {[1, 2, 3, 4, 5, 6].map((score) => (
+              <div 
+                key={`gridline-${score}`} 
+                className="absolute top-0 bottom-0 w-px bg-white" 
+                style={{ 
+                  left: `${(score - 1) * 20}%`,
+                  height: "100%"
+                }}
+              ></div>
+            ))}
+          </div>
+          
+          {/* Maturity areas */}
+          <div>
+            {areasList.map((area, index) => {
+              const areaResult = results[area.id] || { current: 0, desired: 0 };
+              const industryStandard = industryStandards[area.id];
+              
+              // Calculate the width for the industry standard background
+              // Width calculation fixed to align with grid lines
+              const standardWidth = `${industryStandard * 20}%`;
+              
+              return (
+                <div key={area.id} className="flex relative mb-6">
+                  {/* Area name in left column with icon */}
+                  <div className="w-56">
+                    {/* Removed right padding to connect with industry standard box */}
+                    <div className="bg-[#023F88] text-white py-1 px-4 h-12 rounded-l flex items-center">
+                      {areaIcons[area.id] && (
+                        <span className="mr-2">{areaIcons[area.id]}</span>
                       )}
-                      
-                      {/* Desired state dot (orange) */}
-                      {areaResult.desired > 0 && (
-                        <div 
-                          className="desired-dot absolute top-1/2 w-6 h-6 rounded-full bg-[#F58220] z-[10]"
-                          style={{ 
-                            left: `${(areaResult.desired * 20) - 10}%`, // Centered on grid line
-                            transform: 'translate(-50%, -50%)'
-                          }}
-                        ></div>
-                      )}
+                      <span className="text-lg whitespace-nowrap">{area.name}</span>
                     </div>
                   </div>
-                );
-              })}
+                  
+                  {/* Score grid in remaining columns - connected to area name box */}
+                  <div className="flex-1 h-12 relative">
+                    {/* Industry standard background - updated width calculation */}
+                    <div 
+                      className="absolute inset-y-0 left-0 bg-[#daf1fd] z-[2] rounded-r" 
+                      style={{ width: standardWidth }}
+                    ></div>
+                    
+                    {/* Current state dot (blue) */}
+                    {areaResult.current > 0 && (
+                      <div 
+                        className="current-dot absolute top-1/2 w-6 h-6 rounded-full bg-[#023F88] z-[10]"
+                        style={{ 
+                          left: `${areaResult.current * 20}%`, // Position on grid line
+                          transform: 'translate(-50%, -50%)'
+                        }}
+                      ></div>
+                    )}
+                    
+                    {/* Desired state dot (orange) */}
+                    {areaResult.desired > 0 && (
+                      <div 
+                        className="desired-dot absolute top-1/2 w-6 h-6 rounded-full bg-[#F58220] z-[10]"
+                        style={{ 
+                          left: `${areaResult.desired * 20}%`, // Position on grid line
+                          transform: 'translate(-50%, -50%)'
+                        }}
+                      ></div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          {/* Legend */}
+          <div className="flex flex-col mt-10 mb-4 ml-4">
+            <div className="flex items-center mb-2">
+              <img src={diagramBarsIcon} alt="Industry standard" className="w-6 h-6 mr-2" />
+              <span className="text-[#023F88]">Industry standard</span>
             </div>
-            
-            {/* Legend */}
-            <div className="flex flex-col mt-10 mb-4 ml-4"> {/* Increased top margin */}
-              <div className="flex items-center mb-2"> {/* Increased spacing between legend items */}
-                <img src={diagramBarsIcon} alt="Industry standard" className="w-6 h-6 mr-2" />
-                <span className="text-[#023F88]">Industry standard</span>
-              </div>
-              <div className="flex items-center mb-2"> {/* Increased spacing between legend items */}
-                <div className="w-6 h-6 rounded-full bg-[#023F88] mr-2"></div>
-                <span className="text-[#023F88]">Current state</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-6 h-6 rounded-full bg-[#F58220] mr-2"></div>
-                <span className="text-[#023F88]">Desired state</span>
-              </div>
+            <div className="flex items-center mb-2">
+              <div className="w-6 h-6 rounded-full bg-[#023F88] mr-2"></div>
+              <span className="text-[#023F88]">Current state</span>
+            </div>
+            <div className="flex items-center">
+              <div className="w-6 h-6 rounded-full bg-[#F58220] mr-2"></div>
+              <span className="text-[#023F88]">Desired state</span>
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Navigation buttons - styled like SelectAreasPage */}
+      <div className="flex justify-center gap-16 mt-16">
+        <div className="flex flex-col items-center cursor-pointer" onClick={handleGoBack}>
+          <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
+            <img 
+              src={arrowLeftIcon}
+              alt="Go back"
+              className="h-8 w-8" 
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.parentNode.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 19L8 12L15 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>';
+              }}
+            />
+          </div>
+          <span className="text-[#023F88] font-bold">Go back</span>
+        </div>
         
-        {/* Navigation buttons - styled like SelectAreasPage */}
-        <div className="flex justify-center gap-16 mt-16"> {/* Increased top margin */}
-          <div className="flex flex-col items-center cursor-pointer" onClick={handleGoBack}>
-            <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
-              <img 
-                src={arrowLeftIcon}
-                alt="Go back"
-                className="h-8 w-8" 
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentNode.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 19L8 12L15 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>';
-                }}
-              />
-            </div>
-            <span className="text-[#023F88] font-bold">Go back</span>
+        <div className="flex flex-col items-center cursor-pointer" onClick={handleExit}>
+          <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
+            <img 
+              src={arrowRightIcon}
+              alt="Exit"
+              className="h-8 w-8" 
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.parentNode.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>';
+              }}
+            />
           </div>
-          
-          <div className="flex flex-col items-center cursor-pointer" onClick={handleExit}>
-            <div className="w-16 h-16 rounded-full bg-[#023F88] flex items-center justify-center mb-3 hover:bg-[#022a5c] transition-colors">
-              <img 
-                src={arrowRightIcon}
-                alt="Exit"
-                className="h-8 w-8" 
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.parentNode.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>';
-                }}
-              />
-            </div>
-            <span className="text-[#023F88] font-bold">Exit</span>
-          </div>
+          <span className="text-[#023F88] font-bold">Exit</span>
         </div>
       </div>
     </div>
