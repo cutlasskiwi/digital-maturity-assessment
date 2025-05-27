@@ -171,7 +171,7 @@ const GettingStartedPage = () => {
               </div>
             </div>
 
-            {/* Type of products - Updated layout to match design */}
+            {/* Type of products */}
             <div className="flex items-start">
               <img src={packageIcon} alt="Package" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Type of products</div>
@@ -201,7 +201,7 @@ const GettingStartedPage = () => {
               </div>
             </div>
 
-            {/* Location - Moved below Type of products and made editable */}
+            {/* Location */}
             <div className="flex items-center">
               <img src={placeIcon} alt="Location" className="w-12 h-12 mr-4" />
               <div className="w-40 font-bold text-[#023F88]">Location:</div>
@@ -219,7 +219,7 @@ const GettingStartedPage = () => {
           </div>
         </div>
 
-        {/* Navigation buttons - Added Save Data button */}
+        {/* Navigation buttons */}
         <div className="flex justify-center gap-16">
           {/* Save Data button */}
           <div className="flex flex-col items-center cursor-pointer" onClick={handleSaveData}>

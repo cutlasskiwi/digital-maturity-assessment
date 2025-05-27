@@ -148,7 +148,7 @@ const ResultsPage = () => {
     );
   }
   
-  // Map to store icons for each area - Updated with larger icon sizes
+  // Map to store icons for each area 
   const getAreaIcon = (areaId) => {
     const iconMap = {
       'organization': {
@@ -269,7 +269,7 @@ const ResultsPage = () => {
           <div className="absolute z-[3] pointer-events-none" style={{
             top: "48px", /* Height of the score header */
             bottom: "0px",
-            left: "224px", /* Width of left column + padding - adjusted value */
+            left: "224px", /* Width of left column + padding */
             right: "0px",
             height: `${areasList.length * 72}px`, /* Adjusted height to match increased row spacing */
           }}>
@@ -309,7 +309,7 @@ const ResultsPage = () => {
                   
                   {/* Score grid in remaining columns - connected to area name box */}
                   <div className="flex-1 h-12 relative">
-                    {/* Industry standard background - updated with proper opacity for print */}
+                    {/* Industry standard background */}
                     <div 
                       className="absolute inset-y-0 left-0 z-[2] rounded-r" 
                       style={{ 

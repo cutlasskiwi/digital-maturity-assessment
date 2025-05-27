@@ -262,7 +262,7 @@ const SelectAreasPage = () => {
                         </div>
                       </div>
                       
-                      {/* Fixed boxes showing level (1-5 boxes filled based on level) */}
+                      {/* Boxes showing level (1-5 boxes filled based on level) */}
                       <div className="flex space-x-1">
                         {[1, 2, 3, 4, 5].map(boxIndex => (
                           <div 
@@ -291,7 +291,7 @@ const SelectAreasPage = () => {
                         </div>
                       </div>
                       
-                      {/* Fixed boxes showing level (1-5 boxes filled based on level) */}
+                      {/* Boxes showing level (1-5 boxes filled based on level) */}
                       <div className="flex space-x-1">
                         {[1, 2, 3, 4, 5].map(boxIndex => (
                           <div 
