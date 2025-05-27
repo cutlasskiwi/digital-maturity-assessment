@@ -3,9 +3,6 @@ import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 
-// Since we're using icons dynamically based on area.icon, we'll handle that differently
-// We'll create a helper function to get the proper icon
-
 const AssessmentPage = () => {
   const { area } = useParams();
   const navigate = useNavigate();

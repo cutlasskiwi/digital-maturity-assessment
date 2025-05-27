@@ -10,7 +10,7 @@ import numberIcon from '/icons/b-number.png';
 import volumeIcon from '/icons/b-volume.png';
 import packageIcon from '/icons/b-package.png';
 import arrowRightIcon from '/icons/arrow-right.png';
-import saveIcon from '/icons/save.png'; // Import the save icon
+import saveIcon from '/icons/save.png';
 
 // Import product icons
 import cowIcon from '/icons/cow.png';
