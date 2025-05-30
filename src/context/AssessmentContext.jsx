@@ -78,10 +78,11 @@ const STORAGE_KEY = 'tetra_pak_assessment_data';
 
 // Provider component
 export const AssessmentProvider = ({ children }) => {
-  // Initialize state
+  // Initialize state - FIXED: Added separate factoryLocation and assessmentLocation
   const [companyInfo, setCompanyInfo] = useState({
     name: '',
-    location: '',
+    factoryLocation: '',  // Factory location (city/country)
+    assessmentLocation: 'Lund Automation Room',  // Assessment/meeting location
     productionLines: '',
     productionVolume: '',
     productTypes: []
@@ -212,7 +213,8 @@ export const AssessmentProvider = ({ children }) => {
   const resetAssessment = () => {
     setCompanyInfo({
       name: '',
-      location: '',
+      factoryLocation: '',
+      assessmentLocation: 'Lund Automation Room',
       productionLines: '',
       productionVolume: '',
       productTypes: []

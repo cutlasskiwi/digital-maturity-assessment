@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAssessment } from '../context/AssessmentContext';
 
@@ -24,25 +24,12 @@ import otherIcon from '/icons/other.png';
 
 const GettingStartedPage = () => {
   const navigate = useNavigate();
-  const { setSidebarTitle } = useAssessment();
+  const { setSidebarTitle, companyInfo, updateCompanyInfo } = useAssessment();
   
   // Set sidebar title when component mounts
   useEffect(() => {
     setSidebarTitle('Maturity benchmark tool');
   }, [setSidebarTitle]);
-  
-  // Initialize form data from localStorage or with empty values
-  const [formData, setFormData] = useState(() => {
-    const savedData = localStorage.getItem('tetraPackCompanyInfo');
-    return savedData ? JSON.parse(savedData) : {
-      companyName: '',
-      factoryLocation: '',
-      productionLines: '',
-      productionVolume: '',
-      location: 'Lund Automation Room', // Default value
-      productTypes: []
-    };
-  });
 
   const productOptions = [
     { id: 'dairy', name: 'Dairy', icon: cowIcon },
@@ -57,30 +44,60 @@ const GettingStartedPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const toggleProductType = (productId) => {
-    setFormData(prev => {
-      const updatedTypes = prev.productTypes.includes(productId)
-        ? prev.productTypes.filter(id => id !== productId)
-        : [...prev.productTypes, productId];
-      
-      return { ...prev, productTypes: updatedTypes };
+    
+    // Map form field names to context property names
+    const fieldMapping = {
+      companyName: 'name',
+      factoryLocation: 'factoryLocation',
+      location: 'assessmentLocation'
+    };
+    
+    const contextFieldName = fieldMapping[name] || name;
+    
+    updateCompanyInfo({
+      ...companyInfo,
+      [contextFieldName]: value
     });
   };
 
-  // Function to save data to localStorage
+  const toggleProductType = (productId) => {
+    const updatedTypes = companyInfo.productTypes?.includes(productId)
+      ? companyInfo.productTypes.filter(id => id !== productId)
+      : [...(companyInfo.productTypes || []), productId];
+    
+    updateCompanyInfo({
+      ...companyInfo,
+      productTypes: updatedTypes
+    });
+  };
+
+  // Function to save data (now uses context which auto-saves to localStorage)
   const handleSaveData = () => {
-    localStorage.setItem('tetraPackCompanyInfo', JSON.stringify(formData));
-    // You could add a success notification here if needed
+    // Data is automatically saved through context
     alert('Data saved successfully!');
   };
 
   const handleContinue = () => {
-    // Save data to localStorage before continuing
-    localStorage.setItem('tetraPackCompanyInfo', JSON.stringify(formData));
+    // Data is automatically saved through context
     navigate('/select-areas');
+  };
+
+  // Map context data to form fields for display
+  const getFormValue = (fieldName) => {
+    switch (fieldName) {
+      case 'companyName':
+        return companyInfo.name || '';
+      case 'factoryLocation':
+        return companyInfo.factoryLocation || '';
+      case 'productionLines':
+        return companyInfo.productionLines || '';
+      case 'productionVolume':
+        return companyInfo.productionVolume || '';
+      case 'location':
+        return companyInfo.assessmentLocation || 'Lund Automation Room';
+      default:
+        return '';
+    }
   };
 
   return (
@@ -113,7 +130,7 @@ const GettingStartedPage = () => {
                 <input
                   type="text"
                   name="companyName"
-                  value={formData.companyName}
+                  value={getFormValue('companyName')}
                   onChange={handleInputChange}
                   placeholder="Enter company name"
                   className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
@@ -129,7 +146,7 @@ const GettingStartedPage = () => {
                 <input
                   type="text"
                   name="factoryLocation"
-                  value={formData.factoryLocation}
+                  value={getFormValue('factoryLocation')}
                   onChange={handleInputChange}
                   placeholder="Enter city and country"
                   className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
@@ -147,7 +164,7 @@ const GettingStartedPage = () => {
                 <input
                   type="text"
                   name="productionLines"
-                  value={formData.productionLines}
+                  value={getFormValue('productionLines')}
                   onChange={handleInputChange}
                   placeholder="Enter number of production lines"
                   className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
@@ -163,7 +180,7 @@ const GettingStartedPage = () => {
                 <input
                   type="text"
                   name="productionVolume"
-                  value={formData.productionVolume}
+                  value={getFormValue('productionVolume')}
                   onChange={handleInputChange}
                   placeholder="Enter production volume"
                   className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
@@ -184,7 +201,7 @@ const GettingStartedPage = () => {
                       className="flex flex-col items-center cursor-pointer"
                     >
                       <div className={`w-16 h-16 flex items-center justify-center rounded ${
-                        formData.productTypes.includes(product.id) 
+                        (companyInfo.productTypes || []).includes(product.id) 
                           ? 'bg-[#F58220]' 
                           : 'bg-[#023F88]'
                       }`}>
@@ -209,7 +226,7 @@ const GettingStartedPage = () => {
                 <input
                   type="text"
                   name="location"
-                  value={formData.location}
+                  value={getFormValue('location')}
                   onChange={handleInputChange}
                   placeholder="Lund Automation Room"
                   className="w-full p-3 bg-[#023F88] text-white placeholder-gray-300 rounded-md focus:outline-none"
