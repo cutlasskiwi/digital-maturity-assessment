@@ -10,9 +10,14 @@ import ResultsPage from './pages/ResultsPage';
 import './App.css';
 
 function App() {
+  // Use different basename for dev vs production
+  const basename = process.env.NODE_ENV === 'production' 
+    ? '/content/digital-maturity-assessment' 
+    : '';
+
   return (
     <AssessmentProvider>
-      <Router basename="/digital-maturity-assessment">
+      <Router basename={basename}>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/getting-started" element={

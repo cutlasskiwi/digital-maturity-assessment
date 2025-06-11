@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/digital-maturity-assessment/', // Set the base to your repository name
+  // Use different base paths for dev vs production
+  base: process.env.NODE_ENV === 'production' 
+    ? '/content/digital-maturity-assessment/' 
+    : '/',
 })

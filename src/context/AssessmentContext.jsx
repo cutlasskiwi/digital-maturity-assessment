@@ -1,6 +1,21 @@
 // src/context/AssessmentContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+/**
+ * Generate UUIDv7 for assessment storage
+ * UUIDv7 includes timestamp for better sorting
+ */
+const generateUUIDv7 = () => {
+  const timestamp = Date.now();
+  const randomBytes = new Uint8Array(10);
+  crypto.getRandomValues(randomBytes);
+  
+  const hex = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+  const timestampHex = timestamp.toString(16).padStart(12, '0');
+  
+  return `${timestampHex.slice(0, 8)}-${timestampHex.slice(8, 12)}-7${hex.slice(0, 3)}-${hex.slice(3, 7)}-${hex.slice(7, 19)}`;
+};
+
 // Create context
 const AssessmentContext = createContext(null);
 
@@ -209,38 +224,78 @@ export const AssessmentProvider = ({ children }) => {
     return null;
   };
   
-  // Reset assessment
-  const resetAssessment = () => {
-    setCompanyInfo({
-      name: '',
-      factoryLocation: '',
-      assessmentLocation: 'Lund Automation Room',
-      productionLines: '',
-      productionVolume: '',
-      productTypes: []
-    });
-    setSelectedAreas([]);
-    setResponses({});
-    localStorage.removeItem(STORAGE_KEY);
-  };
+// Save completed assessment with UUID
+const saveCompletedAssessment = () => {
+  try {
+    // Only save if there's actual assessment data
+    if (selectedAreas.length === 0 && Object.keys(responses).length === 0) {
+      return null;
+    }
+
+    // Get current assessment data
+    const currentData = {
+      companyInfo,
+      selectedAreas,
+      responses,
+      completedAt: new Date().toISOString(),
+    };
+    
+    // Generate UUID key with prefix
+    const uuid = generateUUIDv7();
+    const storageKey = `/automation-assessment/${uuid}`;
+    
+    // Save completed assessment with UUID key
+    localStorage.setItem(storageKey, JSON.stringify(currentData));
+    
+    console.log(`Assessment saved with ID: ${uuid}`);
+    return uuid;
+  } catch (error) {
+    console.error('Error saving completed assessment:', error);
+    return null;
+  }
+};
+
+// Updated reset function
+const resetAssessment = (saveCompleted = false) => {
+  // If requested, save the current assessment before resetting
+  if (saveCompleted) {
+    saveCompletedAssessment();
+  }
+  
+  // Reset to initial state
+  setCompanyInfo({
+    name: '',
+    factoryLocation: '',
+    assessmentLocation: 'Lund Automation Room',
+    productionLines: '',
+    productionVolume: '',
+    productTypes: []
+  });
+  setSelectedAreas([]);
+  setResponses({});
+  
+  // Clear the current working storage
+  localStorage.removeItem(STORAGE_KEY);
+};
   
   // Context value
-  const contextValue = {
-    availableAreas,
-    companyInfo,
-    updateCompanyInfo,
-    selectedAreas,
-    toggleAreaSelection,
-    responses,
-    updateResponse,
-    calculateResults,
-    getNextArea,
-    areAllAreasCompleted,
-    resetAssessment,
-    sidebarTitle,
-    setSidebarTitle,
-    resetSidebarTitleForAreaSelection
-  };
+const contextValue = {
+  availableAreas,
+  companyInfo,
+  updateCompanyInfo,
+  selectedAreas,
+  toggleAreaSelection,
+  responses,
+  updateResponse,
+  calculateResults,
+  getNextArea,
+  areAllAreasCompleted,
+  resetAssessment,
+  saveCompletedAssessment,
+  sidebarTitle,
+  setSidebarTitle,
+  resetSidebarTitleForAreaSelection
+};
   
   return (
     <AssessmentContext.Provider value={contextValue}>

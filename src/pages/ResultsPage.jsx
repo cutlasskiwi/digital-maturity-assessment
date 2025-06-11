@@ -15,11 +15,12 @@ import smartSupplyChainIcon from '/icons/smart-supply-chain.png';
 
 const ResultsPage = () => {
   const navigate = useNavigate();
-  const { 
-    availableAreas, 
-    selectedAreas, 
-    calculateResults 
-  } = useAssessment();
+const { 
+  availableAreas, 
+  selectedAreas, 
+  calculateResults,
+  saveCompletedAssessment
+} = useAssessment();
   
   // Ref for the results container
   const resultsContainerRef = useRef(null);
@@ -40,9 +41,19 @@ const ResultsPage = () => {
   };
   
   // Handle exit button
-  const handleExit = () => {
-    navigate('/');
-  };
+const handleExit = () => {
+  // Save completed assessment with UUID before exiting
+  const savedId = saveCompletedAssessment();
+  
+  if (savedId) {
+    // Show confirmation with shortened ID
+    alert(`Assessment completed and saved with ID: ${savedId.slice(0, 8)}...`);
+    console.log(`Full assessment ID: ${savedId}`);
+  }
+  
+  // Navigate to home page
+  navigate('/');
+};
   
   // Handle go back button
   const handleGoBack = () => {
